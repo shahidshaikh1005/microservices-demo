@@ -69,3 +69,16 @@ spec:
   - name: grpc
     port: 50051
     targetPort: 50051
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: shippingservice
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: shippingservice
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 60

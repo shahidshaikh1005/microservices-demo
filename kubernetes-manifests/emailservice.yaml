@@ -67,3 +67,16 @@ spec:
   - name: grpc
     port: 5000
     targetPort: 8080
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: emailservice
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: emailservice
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 60
