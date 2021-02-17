@@ -51,6 +51,15 @@ spec:
           periodSeconds: 10
           exec:
             command: ["/bin/grpc_health_probe", "-addr=:7070", "-rpc-timeout=5s"]
+      affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: "Infra-Services"
+                    operator: NotIn
+                    values:
+                    - "true"
 ---
 apiVersion: v1
 kind: Service

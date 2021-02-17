@@ -31,20 +31,29 @@ spec:
       terminationGracePeriodSeconds: 5
       restartPolicy: Always
       containers:
-      - name: main
-        image: gcr.io/google-samples/microservices-demo/loadgenerator:v0.2.__VERSION__
-        env:
-        - name: FRONTEND_ADDR
-          value: "frontend:80"
-        - name: USERS
-          value: "10"
-        resources:
-          requests:
-            cpu: 300m
-            memory: 256Mi
-          limits:
-            cpu: 500m
-            memory: 512Mi
+        - name: main
+          image: gcr.io/google-samples/microservices-demo/loadgenerator:v0.2.__VERSION__
+          env:
+          - name: FRONTEND_ADDR
+            value: "frontend:80"
+          - name: USERS
+            value: "10"
+          resources:
+            requests:
+              cpu: 300m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+      affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: "Infra-Services"
+                    operator: NotIn
+                    values:
+                    - "true"
 ---
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
